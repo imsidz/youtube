@@ -37,6 +37,7 @@ class SearchController extends Controller
 		    'q'             => $request,
 		    'type'          => 'video',
 		    'part'          => 'id, snippet',
+            'order'         => 'viewCount',
 		    'maxResults'    => 20
 		];
 
@@ -44,12 +45,54 @@ class SearchController extends Controller
 
     	$search = Youtube::paginateResults($params, null);
         
+        // $video = Youtube::getVideoInfo('rie-hPVJ7Sw');
+        // dd($search);
         $info = $search['info'];
 
         $nextpagetoken = $info['nextPageToken'];
 
+        $results = $search['results'];
+
+        // $next = iconv(mb_detect_encoding($sid, mb_detect_order(), true), "UTF-8", $sid);
+
+		// dd($results);
+
+        $slug = $show;
+    	return view('search.index', compact('results', 'nextpagetoken', 'slug'));
+    }
+
+    public function next(Request $request, $show){
+        $re = str_replace("-", " ",$show);
+        // dd($request->all());    
+        $params = [
+            'q'             => $re,
+            'type'          => 'video',
+            'part'          => 'id, snippet, statistics',
+            'maxResults'    => 20
+        ];
+
+        // $search = Youtube::searchAdvanced($params, true);
+
+        $search = Youtube::paginateResults($params, $request->next);
         
-		   	
-    	return view('search.index', compact('search'));
+        $info = $search['info'];
+
+        $nextpagetoken = $info['nextPageToken'];
+
+        $results = $search['results'];
+
+
+        // $next = iconv(mb_detect_encoding($sid, mb_detect_order(), true), "UTF-8", $sid);
+
+        // dd($results);
+
+        $slug = $show;
+        return view('search.index', compact('results', 'nextpagetoken', 'slug'));
+    }
+
+    public function watch($videoid){
+        $video = Youtube::getVideoInfo($videoid);
+
+        return view('watch.show', compact('video'));
     }
 }

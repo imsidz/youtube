@@ -29,3 +29,13 @@ Route::get('search/{input}', [
 	'uses'	=>	'SearchController@show',
 	'as'	=>	'search.show'
 ]);
+
+Route::post('search/{input}', [
+	'uses'	=>	'SearchController@next',
+	'as'	=>	'search.next'
+]);
+
+Route::get('watch/{videoId}', [
+	'uses'	=>	'SearchController@watch',
+	'as'	=>	'watch.show'
+]);
