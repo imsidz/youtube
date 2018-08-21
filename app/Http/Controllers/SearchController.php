@@ -93,6 +93,7 @@ class SearchController extends Controller
     public function watch($videoid){
         $video = Youtube::getVideoInfo($videoid);
 
-        return view('watch.show', compact('video'));
+        $relatedVideos = Youtube::getRelatedVideos($videoid);
+        return view('watch.show', compact('video', 'relatedVideos'));
     }
 }

@@ -36,16 +36,45 @@
             
         </div>
     </div>
-   
+   <style type="text/css">
+     .boxhead a {
+          color: #000;
+          text-decoration: none;
+      }
+   </style>
 <div class="container-fluid">
-	<div class="col-md-8">
-		<div>
+	<div class="row">
+		<div class="col-md-8">
+			<div>
+				
+			</div>
+			<div class="embed-responsive embed-responsive-16by9">
+				<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{$video->id}}?autoplay=1" allowfullscreen></iframe>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="container-fluid">
+				@foreach($relatedVideos as $related)
+				<div class="row boxhead">
+					<div class="col-md-4">
+						<a href="{{ url('watch/' . $related->id->videoId)}}">
+							<img src="{{$related->snippet->thumbnails->medium->url}}" class="img-fluid">
+						</a>
+					</div>
+					<div class="col-md-8">
+						<a href="{{ url('watch/' . $related->id->videoId)}}">
+							<h3 style="font-size: 14px;">{{ $related->snippet->title }}</h3>
+							<p>{{ $related->snippet->channelTitle }}</p>
+						</a>
+					</div>
+				</div>
+				<hr>
+				@endforeach
+			</div>
 			
 		</div>
-		<div class="embed-responsive embed-responsive-16by9">
-		  {!! $video->player->embedHtml !!}
-		</div>
 	</div>
+	
 </div>
 
 <script type="text/javascript" src="{{ asset('js/app.js')}}"></script>
